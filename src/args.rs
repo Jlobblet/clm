@@ -8,7 +8,7 @@ fn parse_delimiter(s: &str) -> Result<Regex, Error> {
 }
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "col")]
+#[structopt(name = "clm")]
 pub struct Args {
     #[structopt(short, long, default_value = r"\s+", parse(try_from_str = parse_delimiter))]
     pub delimiter: Regex,

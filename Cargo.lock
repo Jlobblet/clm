@@ -59,7 +59,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "col"
+name = "clm"
 version = "0.1.0"
 dependencies = [
  "anyhow",
