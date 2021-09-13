@@ -1,22 +1,22 @@
 use anyhow::{anyhow, Result};
 use regex::{Error, Regex};
 use std::io::{BufRead, StdinLock};
-use structopt::StructOpt;
+use structopt::{clap::ArgGroup, StructOpt};
 
 fn parse_delimiter(s: &str) -> Result<Regex, Error> {
     Regex::new(s)
 }
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "clm")]
+#[structopt(name = "clm", group = ArgGroup::with_name("mode").required(true))]
 pub struct Args {
     #[structopt(short, long, default_value = r"\s+", parse(try_from_str = parse_delimiter))]
     pub delimiter: Regex,
 
-    #[structopt(short, long, conflicts_with = "col_name", required_unless = "col_name")]
+    #[structopt(short, long, group = "mode")]
     pub field: Option<usize>,
 
-    #[structopt(short, long, conflicts_with = "field", required_unless = "field")]
+    #[structopt(short, long, group = "mode")]
     pub col_name: Option<String>,
 }
 
