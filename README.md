@@ -7,7 +7,7 @@ Written in Rust.
 clm 0.1.0
 
 USAGE:
-    clm [OPTIONS] --col-name <col-name> --field <field>
+    clm [OPTIONS] <--field <field>|--col-name <col-name>>
 
 FLAGS:
     -h, --help       Prints help information
@@ -16,5 +16,6 @@ FLAGS:
 OPTIONS:
     -c, --col-name <col-name>      
     -d, --delimiter <delimiter>     [default: \s+]
-    -f, --field <field> 
+    -f, --field <field>
+        --filter <filter>
 ```
