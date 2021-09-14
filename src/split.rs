@@ -1,9 +1,15 @@
 use crate::args::ProcessedArgs;
 
 pub fn process_line<'a, 'b>(args: &'b ProcessedArgs, s: &'a str) -> Option<&'a str> {
-    match args.raw.filter.as_ref().map(|r| r.is_match(s)).unwrap_or(true) {
+    match args
+        .raw
+        .filter
+        .as_ref()
+        .map(|r| r.is_match(s))
+        .unwrap_or(true)
+    {
         true => args.raw.delimiter.split(s).nth(args.field - 1).or(Some("")),
-        false => None
+        false => None,
     }
 }
 

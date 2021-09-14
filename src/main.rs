@@ -21,10 +21,12 @@ fn main(args: Args) -> Result<()> {
         match lock.read_line(&mut buf) {
             Ok(0) => break,
             Err(_) => break,
-            Ok(_) => if let Some(s) = split::process_line(&args, &buf) {
-                output.write_all(s.as_bytes())?;
-                output.write_all("\n".as_bytes())?;
-            },
+            Ok(_) => {
+                if let Some(s) = split::process_line(&args, &buf) {
+                    output.write_all(s.as_bytes())?;
+                    output.write_all("\n".as_bytes())?;
+                }
+            }
         };
 
         buf.clear();
