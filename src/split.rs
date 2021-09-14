@@ -30,7 +30,6 @@ mod tests {
                 raw: Args {
                     delimiter: Regex::new(d)?,
                     filter: None,
-                    pcre: false,
                     field: Some(2),
                     col_name: None,
                 },

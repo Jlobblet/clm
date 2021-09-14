@@ -46,8 +46,8 @@ impl ProcessedArgs {
                 }
             }
             None => ProcessedArgs {
-                raw: args,
                 field: args.field.unwrap(),
+                raw: args,
             },
         })
     }
