@@ -1,8 +1,8 @@
 use crate::args::ProcessedArgs;
 
 pub fn process_line<'a, 'b>(args: &'b ProcessedArgs, s: &'a str) -> Option<&'a str> {
-    if args.filter.as_ref().map(|r| r.is_match(s)).unwrap_or(false) {
-        args.delimiter.split(s).nth(args.field - 1).or(Some(""))
+    if args.raw.filter.as_ref().map(|r| r.is_match(s)).unwrap_or(false) {
+        args.raw.delimiter.split(s).nth(args.field - 1).or(Some(""))
     } else {
         None
     }
@@ -10,7 +10,7 @@ pub fn process_line<'a, 'b>(args: &'b ProcessedArgs, s: &'a str) -> Option<&'a s
 
 #[cfg(test)]
 mod tests {
-    use crate::args::ProcessedArgs;
+    use crate::args::{Args, ProcessedArgs};
     use crate::split::process_line;
     use anyhow::Result;
     use regex::Regex;
@@ -27,10 +27,14 @@ mod tests {
         let mut buf: String;
         for (d, input, expected) in cases {
             let args = ProcessedArgs {
-                delimiter: Regex::new(d)?,
-                filter: None,
+                raw: Args {
+                    delimiter: Regex::new(d)?,
+                    filter: None,
+                    pcre: false,
+                    field: Some(2),
+                    col_name: None,
+                },
                 field: 2,
-                col_name: None,
             };
             buf = String::from(input);
             let actual = process_line(&args, &mut buf).as_bytes();

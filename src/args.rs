@@ -24,10 +24,8 @@ pub struct Args {
 }
 
 pub struct ProcessedArgs {
-    pub delimiter: Regex,
-    pub filter: Option<Regex>,
+    pub raw: Args,
     pub field: usize,
-    pub col_name: Option<String>,
 }
 
 impl ProcessedArgs {
@@ -43,17 +41,13 @@ impl ProcessedArgs {
                     .position(|s| s == n)
                     .ok_or_else(|| anyhow!("Could not find column {}", n))?;
                 ProcessedArgs {
-                    delimiter: args.delimiter,
-                    filter: args.filter,
+                    raw: args,
                     field: index + 1, // 1 is the first column, not 0
-                    col_name: args.col_name,
                 }
             }
             None => ProcessedArgs {
-                delimiter: args.delimiter,
-                filter: args.filter,
+                raw: args,
                 field: args.field.unwrap(),
-                col_name: None,
             },
         })
     }
