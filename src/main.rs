@@ -1,3 +1,6 @@
+#![forbid(unsafe_code, future_incompatible)]
+#![deny(missing_debug_implementations, bad_style)]
+
 use std::io::{stderr, stdin, stdout, BufRead, Write};
 
 use anyhow::Result;
