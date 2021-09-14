@@ -3,15 +3,18 @@ use regex::{Error, Regex};
 use std::io::{BufRead, StdinLock};
 use structopt::{clap::ArgGroup, StructOpt};
 
-fn parse_delimiter(s: &str) -> Result<Regex, Error> {
+fn parse_regex(s: &str) -> Result<Regex, Error> {
     Regex::new(s)
 }
 
 #[derive(Debug, StructOpt)]
 #[structopt(name = "clm", group = ArgGroup::with_name("mode").required(true))]
 pub struct Args {
-    #[structopt(short, long, default_value = r"\s+", parse(try_from_str = parse_delimiter))]
+    #[structopt(short, long, default_value = r"\s+", parse(try_from_str = parse_regex))]
     pub delimiter: Regex,
+
+    #[structopt(long, parse(try_from_str = parse_regex))]
+    pub filter: Option<Regex>,
 
     #[structopt(short, long, group = "mode")]
     pub field: Option<usize>,
@@ -22,6 +25,7 @@ pub struct Args {
 
 pub struct ProcessedArgs {
     pub delimiter: Regex,
+    pub filter: Option<Regex>,
     pub field: usize,
     pub col_name: Option<String>,
 }
@@ -40,12 +44,14 @@ impl ProcessedArgs {
                     .ok_or_else(|| anyhow!("Could not find column {}", n))?;
                 ProcessedArgs {
                     delimiter: args.delimiter,
+                    filter: args.filter,
                     field: index + 1, // 1 is the first column, not 0
                     col_name: args.col_name,
                 }
             }
             None => ProcessedArgs {
                 delimiter: args.delimiter,
+                filter: args.filter,
                 field: args.field.unwrap(),
                 col_name: None,
             },

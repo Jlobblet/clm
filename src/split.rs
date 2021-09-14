@@ -1,7 +1,11 @@
 use crate::args::ProcessedArgs;
 
-pub fn process_line<'a, 'b>(args: &'b ProcessedArgs, s: &'a str) -> &'a str {
-    args.delimiter.split(s).nth(args.field - 1).unwrap_or("")
+pub fn process_line<'a, 'b>(args: &'b ProcessedArgs, s: &'a str) -> Option<&'a str> {
+    if args.filter.as_ref().map(|r| r.is_match(s)).unwrap_or(false) {
+        args.delimiter.split(s).nth(args.field - 1).or(Some(""))
+    } else {
+        None
+    }
 }
 
 #[cfg(test)]
@@ -24,6 +28,7 @@ mod tests {
         for (d, input, expected) in cases {
             let args = ProcessedArgs {
                 delimiter: Regex::new(d)?,
+                filter: None,
                 field: 2,
                 col_name: None,
             };
