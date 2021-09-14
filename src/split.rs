@@ -17,11 +17,11 @@ mod tests {
     #[test]
     fn test_delimiters() -> Result<()> {
         let cases = vec![
-            (r"\s+", "1 2 3 4", "2"),
-            (r"\s+", "1    2    3    4   ", "2"),
-            (r",\s+", "1, 2, 3, 4", "2"),
-            (r",", "1,2,3,4", "2"),
-            (r"\s+", "1234", ""),
+            (r"\s+", "1 2 3 4", Some("2")),
+            (r"\s+", "1    2    3    4   ", Some("2")),
+            (r",\s+", "1, 2, 3, 4", Some("2")),
+            (r",", "1,2,3,4", Some("2")),
+            (r"\s+", "1234", Some("")),
         ];
         let mut buf: String;
         for (d, input, expected) in cases {
@@ -35,8 +35,8 @@ mod tests {
                 field: 2,
             };
             buf = String::from(input);
-            let actual = process_line(&args, &mut buf).as_bytes();
-            assert_eq!(actual, expected.as_bytes());
+            let actual = process_line(&args, &mut buf);
+            assert_eq!(actual, expected);
         }
         Ok(())
     }
