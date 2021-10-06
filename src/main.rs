@@ -29,7 +29,7 @@ fn main(args: Args) -> Result<()> {
             Err(e) => {
                 let mut stderr = stderr();
                 stderr.write_all(e.to_string().as_ref())?;
-                return  Err(anyhow::Error::from(e));
+                return Err(anyhow::Error::from(e));
             }
             Ok(_) => {
                 if let Some(s) = split::process_line(&args, &buf) {
